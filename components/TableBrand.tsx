@@ -1,29 +1,38 @@
 import { Brand } from '@/interfaces';
+import AddBrand from './brand/AddBrand';
+import EditBrand from './brand/EditBrand';
+import DeleteBrand from './brand/DeleteBrand';
 
-const TableBrand = ({ brands }: { brands: Brand[] }) => {
+const TableProduct = ({ brands }: { brands: Brand[] }) => {
   return (
-    <div className='overflow-x-auto'>
-      <table className='table w-full'>
+    <div className='flex flex-col gap-4'>
+      <div className='flex flex-row justify-between items-center'>
+        <h1 className='text-2xl'>Brands</h1>
+        <AddBrand />
+      </div>
+      <table className='table w-full min-w-[32rem]'>
         <thead>
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Action</th>
+            <th className='text-center'>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Adidas</td>
-            <td className='flex gap-4'>
-              <button className='btn btn-sm btn-warning'>Edit</button>
-              <button className='btn btn-sm btn-error'>Delete</button>
-            </td>
-          </tr>
+          {brands.map((brand, index) => (
+            <tr key={brand._id}>
+              <td>{index + 1}</td>
+              <td>{brand.name}</td>
+              <td className='flex flex-row justify-center items-center gap-4'>
+                <EditBrand brand={brand} />
+                <DeleteBrand brand={brand} />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
 };
 
-export default TableBrand;
+export default TableProduct;
