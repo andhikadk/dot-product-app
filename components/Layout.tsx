@@ -14,13 +14,27 @@ export const getToken = async () => {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const [name, setName] = React.useState('');
+
   React.useEffect(() => {
+    const getProfile = async () => {
+      try {
+        const token = await getToken();
+        const res = await axios.get('http://localhost:5000/api/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setName(res.data.user.name);
+      } catch (error: any) {}
+    };
     getToken();
+    getProfile();
   }, []);
 
   return (
     <>
-      <Header />
+      <Header name={name} />
       <main className='flex min-h-[calc(100vh-100px)] justify-center mt-8'>
         {children}
       </main>

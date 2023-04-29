@@ -2,7 +2,7 @@ import Link from 'next/link';
 import router from 'next/router';
 import axios from 'axios';
 
-const Header = () => {
+const Header = ({ name }: any) => {
   const handleLogout = async () => {
     try {
       await axios.delete('http://localhost:5000/api/logout');
@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <header className='navbar bg-base-100 sticky top-0'>
       <div className='navbar-start'>
-        <a className='btn btn-ghost normal-case text-xl'>daisyUI</a>
+        <a className='btn btn-ghost normal-case text-xl'>HEADER</a>
       </div>
       <div className='navbar-center'>
         <div className='items-stretch hidden lg:flex'>
@@ -28,7 +28,7 @@ const Header = () => {
       <div className='navbar-end'>
         <div className='dropdown dropdown-end'>
           <label tabIndex={0} className='btn btn-ghost justify-center'>
-            Account Name
+            Welcome back, {name}
           </label>
           <ul
             tabIndex={0}

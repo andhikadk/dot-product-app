@@ -4,8 +4,10 @@ import { useRouter } from 'next/router';
 import Alert from '@/components/Alert';
 
 const Login = () => {
+  const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confPassword, setConfPassword] = React.useState('');
   const [error, setError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const router = useRouter();
@@ -23,11 +25,13 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/login', {
+      await axios.post('http://localhost:5000/api/register', {
+        name,
         email,
         password,
+        confPassword,
       });
-      router.push('/');
+      router.push('/auth/login');
     } catch (error: any) {
       setError(true);
       setErrorMessage(error.response.data.message);
@@ -39,9 +43,22 @@ const Login = () => {
     <div className='flex h-screen justify-center items-center'>
       <div className='card w-96 bg-base-100 shadow-xl'>
         <div className='card-body'>
-          <h2 className='text-xl text-center font-semibold'>LOGIN</h2>
+          <h2 className='text-xl text-center font-semibold'>REGISTER</h2>
           {error && <Alert message={errorMessage} />}
           <form onSubmit={handleSubmit}>
+            <div className='form-control w-full max-w-xs'>
+              <label className='label'>
+                <span className='label-text'>Name</span>
+              </label>
+              <input
+                type='text'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder='Your Name'
+                className='input input-bordered w-full max-w-xs'
+                required
+              />
+            </div>
             <div className='form-control w-full max-w-xs'>
               <label className='label'>
                 <span className='label-text'>Email</span>
@@ -68,18 +85,31 @@ const Login = () => {
                 required
               />
             </div>
+            <div className='form-control w-full max-w-xs'>
+              <label className='label'>
+                <span className='label-text'>Password</span>
+              </label>
+              <input
+                type='password'
+                value={confPassword}
+                onChange={(e) => setConfPassword(e.target.value)}
+                placeholder='Password'
+                className='input input-bordered w-full max-w-xs'
+                required
+              />
+            </div>
             <div className='form-control w-full max-w-xs mt-4'>
               <button type='submit' className='btn btn-primary w-full max-w-xs'>
-                Login
+                Register
               </button>
             </div>
           </form>
           <p className='text-center mt-4'>
-            Don&apos;t have an account?{' '}
+            Already have an account?{' '}
             <span
-              onClick={() => router.push('/auth/register')}
+              onClick={() => router.push('/auth/login')}
               className='cursor-pointer text-white hover:text-secondary'>
-              Register
+              Login
             </span>
           </p>
         </div>
